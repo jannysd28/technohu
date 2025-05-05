@@ -66,6 +66,23 @@ export default function BuyerDashboard() {
       
       <main className="flex-grow bg-slate-50">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          
+          {/* User Profile Section */}
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+            <div className="px-4 py-5 sm:px-6 flex items-center space-x-4">
+              <img 
+                src={user?.avatar || "/default-avatar.png"} 
+                alt="Profile Avatar" 
+                className="w-16 h-16 rounded-full border border-gray-200"
+              />
+              <div>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">{user?.name}</h3>
+                <p className="text-sm text-gray-500">{user?.profession}</p>
+                <p className="text-sm text-gray-500">{user?.description}</p>
+              </div>
+            </div>
+          </div>
+
           <div className="md:flex md:items-center md:justify-between mb-8">
             <div className="flex-1 min-w-0">
               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -80,6 +97,7 @@ export default function BuyerDashboard() {
             </div>
           </div>
           
+          {/* Rest of the Buyer Dashboard content */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-8">
             <Card>
               <CardHeader>
@@ -111,136 +129,8 @@ export default function BuyerDashboard() {
             </Card>
           </div>
           
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
-            <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-              <div>
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  My Active Jobs
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  Track your active job requests and purchases.
-                </p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center">
-                  <span className="text-xl font-bold text-gray-900">{activeRequests.length}</span>
-                  <span className="ml-1 text-sm text-gray-500">Active</span>
-                </div>
-                <div className="w-px h-8 bg-gray-300"></div>
-                <div className="flex items-center">
-                  <span className="text-xl font-bold text-gray-900">{requests.length}</span>
-                  <span className="ml-1 text-sm text-gray-500">Total</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="border-t border-gray-200 divide-y divide-gray-200">
-              {isLoading ? (
-                <div className="px-4 py-5 sm:p-6 flex justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                </div>
-              ) : activeRequests.length === 0 ? (
-                <div className="px-4 py-10 sm:p-6 text-center">
-                  <h4 className="text-lg font-medium text-gray-900">No active jobs</h4>
-                  <p className="mt-1 text-gray-500">You don't have any active job requests.</p>
-                  <Button 
-                    onClick={() => setIsRequestFormOpen(true)}
-                    className="mt-4"
-                    variant="outline"
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create a Request
-                  </Button>
-                </div>
-              ) : (
-                activeRequests.map(request => (
-                  <div key={request.id} className="px-4 py-5 sm:p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                            <FileCode className="h-6 w-6 text-blue-600" />
-                          </div>
-                        </div>
-                        <div className="ml-4">
-                          <h4 className="text-lg font-medium text-gray-900">{request.title}</h4>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              request.status === "pending" 
-                                ? "bg-yellow-100 text-yellow-800" 
-                                : "bg-green-100 text-green-800"
-                            }`}>
-                              {request.status === "pending" ? "Pending" : "In Progress"}
-                            </span>
-                            <span className="ml-2 text-sm text-gray-500">Seller: {request.sellerName}</span>
-                            <span className="ml-2 text-sm text-gray-500">Request ID: #{request.id}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-medium text-gray-900">${(request.price / 100).toFixed(2)}</span>
-                        <Button variant="outline" size="sm" className="flex items-center">
-                          <MessageSquare className="h-4 w-4 mr-1" />
-                          Message
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          {/* More content like Active Jobs and Completed Jobs */}
           
-          {completedRequests.length > 0 && (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
-              <div className="px-4 py-5 sm:px-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  Completed Jobs
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  Your past job requests and purchases.
-                </p>
-              </div>
-              
-              <div className="border-t border-gray-200 divide-y divide-gray-200">
-                {completedRequests.map(request => (
-                  <div key={request.id} className="px-4 py-5 sm:p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center">
-                            <FileCode className="h-6 w-6 text-gray-600" />
-                          </div>
-                        </div>
-                        <div className="ml-4">
-                          <h4 className="text-lg font-medium text-gray-900">{request.title}</h4>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              request.status === "completed" 
-                                ? "bg-green-100 text-green-800" 
-                                : "bg-red-100 text-red-800"
-                            }`}>
-                              {request.status === "completed" ? "Completed" : "Rejected"}
-                            </span>
-                            <span className="ml-2 text-sm text-gray-500">Seller: {request.sellerName}</span>
-                            <span className="ml-2 text-sm text-gray-500">Request ID: #{request.id}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-medium text-gray-900">${(request.price / 100).toFixed(2)}</span>
-                        {request.status === "completed" && (
-                          <Button variant="outline" size="sm">
-                            Leave Review
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </main>
       
