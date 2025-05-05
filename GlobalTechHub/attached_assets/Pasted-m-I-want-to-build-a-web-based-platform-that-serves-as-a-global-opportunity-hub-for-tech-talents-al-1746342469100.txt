@@ -1,0 +1,168 @@
+m
+I want to build a web-based platform that serves as a global opportunity hub for tech talents, allowing users to upload, run, preview, and buy/sell scripts, GUI apps, and web applications in a secure and scalable environment. The goal is to create a flexible job and code marketplace where anyone can showcase their tech skills, sell useful tools, or request custom development work.
+
+🧑‍💼 User Roles & Registration
+Two registration paths: "Register as Buyer" or "Register as Seller."
+
+Users can later switch roles between buyer and seller.
+
+A unified profile includes name, location (with flag), avatar, and role status.
+
+🛒 Seller Dashboard
+Upload entire folders or files containing CLI tools, GUI apps, or web apps.
+
+Required input fields: Title, Description, Price, Command Inputs, and Language Tags.
+
+Upon upload:
+
+The system automatically scans the folder for environment info (e.g., requirements.txt, package.json).
+
+The uploaded code is tested in a sandboxed environment that supports any language or framework.
+
+Files are securely isolated and executed using containerization (Docker).
+
+Buttons:
+
+Run Preview – Executes app in sandbox with default working directory set to the uploaded folder.
+
+Scan with Antivirus – Sends content to an antivirus API (e.g., VirusTotal).
+
+Buy Now
+
+Display buyer requests, with unique IDs and confirmation buttons. Confirmed requests increment "Active Work" counters.
+
+A daily limit of 5 pitches to buyers (with optional paid upgrade to unlimited pitching).
+
+🛍️ Buyer Dashboard
+Browse and test uploaded content (scripts, apps).
+
+Run scripts with command-line input, and GUI/web app previews via sandbox environment.
+
+Ability to make custom job requests to sellers:
+
+Fill in job description and proposed price.
+
+A 10% platform fee is added automatically.
+
+Display "Active Jobs" with real-time counter updates.
+
+View seller profiles and initiate communication via "Pitch" system.
+
+🖥️ Execution Environment
+Fully sandboxed, containerized runners for all major languages and environments.
+
+CLI support: stdin input via web interface.
+
+GUI/Web apps: previewed via embedded VNC or browser iframe.
+
+Auto-install dependencies via standard package managers.
+
+Files are scoped to uploaded folder (virtual root).
+
+📬 Communication & Request System
+Sellers can pitch buyers (5x daily or unlimited via subscription).
+
+Buyers can send custom requests to any seller (unlimited).
+
+Requests include job description, proposed price, and status tracking.
+
+Each request has a unique ID to avoid duplication in counters.
+
+Pitches and requests are tracked in both user dashboards and the admin panel.
+
+💳 Payments & Transactions
+Platform charges:
+
+10% fee on all buyer payments.
+
+10% fee on all seller earnings.
+
+Paid features: Unlimited pitching, optional antivirus scan.
+
+Integrated escrow system: funds are released to seller only upon buyer confirmation.
+
+Optional dispute resolution system managed by platform admin.
+
+ Seller Marketplace Browser
+Feature Name: Seller Explorer / Marketplace Feed
+
+Functionality:
+
+Buyers see a scrollable list/grid of all active sellers and their uploaded content.
+
+Each seller card shows:
+
+Profile picture & country flag
+
+Seller name and short status (availability)
+
+Featured uploads: thumbnails, titles, prices
+
+Ratings, reviews, and verification status
+
+Clicking a seller opens their public profile page:
+
+All their uploaded scripts/apps
+
+“Run Demo,” “Buy Now,” and “Send Request” buttons
+
+Request form to initiate custom work
+
+Filters and Sorting:
+
+Filter by category (CLI, GUI, Web App)
+
+Sort by price, rating, recency
+
+Search by title, keyword, or tag
+
+Technical Note:
+
+Powered by a seller index with caching for performance
+
+Supports pagination or infinite scrolling
+it should show both active and no active in the market space
+
+🌍 Location & VPN Detection
+Auto-detect user’s country using IP geolocation.
+
+Display flag and country name on profile.
+
+VPN/proxy users are marked as “Unknown ❓”.
+
+🧾 Ratings, Reviews & Trust
+Buyers can leave ratings and short reviews after transactions.
+
+Sellers gain badges based on completion rates and consistency.
+
+Verified accounts via email or ID (optional).
+
+⚙️ Admin Dashboard
+View and manage:
+
+All users, uploads, messages, pitches, and requests.
+
+Site performance metrics and sandbox resource usage.
+
+Suspensions, messages, disputes.
+
+Download any uploaded content for moderation.
+
+Message any user directly.
+
+Monitor pitches/requests and platform revenue.
+
+🔄 Flexibility & Growth
+Both buyers and sellers can toggle availability (Active / Busy / Unavailable).
+
+Users can write a 50-word status update.
+
+Users can switch between buyer and seller roles from their profile.
+
+Future support for:
+
+Auto-translated profiles
+
+AI code summary previews
+
+One-click deployment to hosting services (e.g., Replit, Render)
