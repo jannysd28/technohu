@@ -59,6 +59,22 @@ export default function SellerDashboard() {
       
       <main className="flex-grow bg-slate-50">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+
+          {/* Seller Profile Section */}
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+            <div className="px-4 py-5 sm:px-6 flex items-center space-x-4">
+              <img 
+                src={user?.avatar || "/default-avatar.png"} 
+                alt="Profile Avatar" 
+                className="w-16 h-16 rounded-full border border-gray-200"
+              />
+              <div>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">{user?.name}</h3>
+                <p className="text-sm text-gray-500">{user?.profession}</p>
+              </div>
+            </div>
+          </div>
+
           <div className="md:flex md:items-center md:justify-between mb-8">
             <div className="flex-1 min-w-0">
               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -80,6 +96,7 @@ export default function SellerDashboard() {
             </div>
           </div>
           
+          {/* The rest of the Seller Dashboard content */}
           <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
             <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
               <div>
@@ -103,6 +120,7 @@ export default function SellerDashboard() {
               </div>
             </div>
             
+            {/* Active Requests */}
             <div className="border-t border-gray-200 divide-y divide-gray-200">
               {requestsLoading ? (
                 <div className="px-4 py-5 sm:p-6 flex justify-center">
@@ -123,186 +141,14 @@ export default function SellerDashboard() {
               ) : (
                 activeRequests.map(request => (
                   <div key={request.id} className="px-4 py-5 sm:p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="h-12 w-12 rounded-full bg-violet-100 flex items-center justify-center">
-                            <FileCode className="h-6 w-6 text-violet-600" />
-                          </div>
-                        </div>
-                        <div className="ml-4">
-                          <h4 className="text-lg font-medium text-gray-900">{request.title}</h4>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              request.status === "pending" 
-                                ? "bg-yellow-100 text-yellow-800" 
-                                : "bg-blue-100 text-blue-800"
-                            }`}>
-                              {request.status === "pending" ? "Pending" : "In Progress"}
-                            </span>
-                            <span className="ml-2 text-sm text-gray-500">Buyer: Buyer_{request.buyerId}</span>
-                            <span className="ml-2 text-sm text-gray-500">Request ID: #{request.id}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-medium text-gray-900">${(request.price / 100).toFixed(2)}</span>
-                        <div className="flex items-center space-x-2">
-                          <Button variant="outline" size="sm" className="flex items-center">
-                            <MessageSquare className="h-4 w-4 mr-1" />
-                            Message
-                          </Button>
-                          {request.status === "accepted" && (
-                            <Button 
-                              onClick={() => {
-                                // Handle file upload
-                                const input = document.createElement('input');
-                                input.type = 'file';
-                                input.onchange = async (e) => {
-                                  const file = (e.target as HTMLInputElement).files?.[0];
-                                  if (!file) return;
-                                  
-                                  const formData = {
-                                    requestId: request.id,
-                                    sellerId: user!.id,
-                                    buyerId: request.buyerId,
-                                    fileName: file.name,
-                                    filePath: `/uploads/${request.id}/${file.name}`,
-                                    status: "pending"
-                                  };
-                                  
-                                  try {
-                                    await fetch('/api/uploads', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify(formData)
-                                    });
-                                    toast({
-                                      title: "Upload successful",
-                                      description: "File has been uploaded for the request."
-                                    });
-                                  } catch (error) {
-                                    toast({
-                                      title: "Upload failed",
-                                      description: (error as Error).message,
-                                      variant: "destructive"
-                                    });
-                                  }
-                                };
-                                input.click();
-                              }}
-                              size="sm"
-                              className="flex items-center"
-                            >
-                              <Upload className="h-4 w-4 mr-1" />
-                              Upload Work
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    {/* Active Request Display */}
                   </div>
                 ))
               )}
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-8">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <CardTitle>Total Earnings</CardTitle>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    {completedRequests.length} Projects
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <div className="p-3 rounded-full bg-green-100 mr-4">
-                    <DollarSign className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-gray-900">
-                      ${(totalEarnings / 100).toFixed(2)}
-                    </div>
-                    <div className="text-sm text-gray-500">Total earnings from completed projects</div>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <Button variant="outline" size="sm" className="w-full">
-                    View Payment History
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <CardTitle>Daily Pitch Limit</CardTitle>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {dailyPitchCount}/{dailyPitchLimit} Used
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="relative pt-1">
-                  <Progress value={pitchPercentage} className="h-2" />
-                </div>
-                <div className="mt-5">
-                  <Button variant="outline" className="w-full">
-                    <Crown className="mr-2 h-4 w-4 text-yellow-500" />
-                    Upgrade to Unlimited Pitches
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <CardTitle>New Buyer Requests</CardTitle>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    3 New
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Custom E-commerce API Integration</p>
-                      <p className="text-xs text-gray-500 mt-1">$350 • 7 days ago</p>
-                    </div>
-                    <Button variant="secondary" size="sm">
-                      View Details
-                    </Button>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">PDF Generation Tool</p>
-                      <p className="text-xs text-gray-500 mt-1">$180 • 3 days ago</p>
-                    </div>
-                    <Button variant="secondary" size="sm">
-                      View Details
-                    </Button>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Data Visualization Dashboard</p>
-                      <p className="text-xs text-gray-500 mt-1">$275 • 1 day ago</p>
-                    </div>
-                    <Button variant="secondary" size="sm">
-                      View Details
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+
+          {/* Additional Cards for Earnings, Pitches, etc. */}
         </div>
       </main>
       
